@@ -14,6 +14,7 @@ socketio = SocketIO(
     manage_session=False
 )
 
+users = []
 
 @app.route('/', defaults={"filename": "index.html"})
 @app.route('/<path:filename>')
@@ -24,6 +25,8 @@ def index(filename):
 @socketio.on('connect')
 def on_connect():
     print('User connected!')
+    # global users
+    # socketio.emit('connect', users, broadcast=True, include_self=False)
 
 # When a client disconnects from this Socket connection, this function is run
 @socketio.on('disconnect')
@@ -32,11 +35,21 @@ def on_disconnect():
 
 
 @socketio.on('board')
-def on_click(data): # data is whatever arg you pass in your emit call on client
+def on_play(data): # data is whatever arg you pass in your emit call on client
     print(str(data))
     # This emits the 'board' event from the server to all clients except for
     # the client that emmitted the event that triggered this function
     socketio.emit('board',  data, broadcast=True, include_self=False)
+
+
+@socketio.on('login')
+def log_in(players):
+    print(str(players))
+    global users
+    users.append(players['player'])
+    # print(len(users), type(users), users)
+    socketio.emit('login', users, broadcast=True, include_self=True)
+
 
 # Note that we don't call app.run anymore. We call socketio.run with app arg
 socketio.run(
