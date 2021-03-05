@@ -28,18 +28,29 @@ export function Board(props){
     const [board, setBoard] = useState(Array(9).fill(null));
     // const [player, setPlayer] = useState();
     const winner = calcWinner(board);
-    const [isNext, setNext] = useState(false);
+    const [isNext, setNext] = useState("X");
     
     function onClickButton(index) {
-        // console.log(index);
         let newBoard = board;
-        if(board[index] === null && isNext && !winner){
+        
+        if(board[index] === null && isNext==props.sign && !winner){
             newBoard[index] = props.sign;
             setBoard(() => newBoard);
-            // console.log(board, player);
-            setNext(() => false);
-            socket.emit('board', {board: newBoard});
+            
+            let next = isNext;
+            isNext === "X" ? (next = "O") : (next = "X");
+            setNext(() => next);
+            
+            socket.emit('board', {board: newBoard, nextP: next});
         }
+    }
+    
+    function onClickReset(){
+        let newBoard = Array(9).fill(null);
+        setBoard(() => newBoard);
+        
+        let next = "X";
+        socket.emit('board', {board: newBoard, nextP: next});
     }
     
     useEffect(() => {
@@ -48,25 +59,20 @@ export function Board(props){
     socket.on('board', (data) => {
       console.log('Player event received!');
       console.log(data);
-      
       setBoard((board) => data.board);
-      setNext(() => true);
+      setNext((isNext) => data.nextP);
     });
   }, []);
     
     let Squares;
-    
-    // if(!winner){
+
     Squares = board.map((box, index) => <Box value={box} key={index} onClick={() => onClickButton(index)} />);
-    // }else{
-    //     Squares = board.map((box, index) => <BoxSpec value={box} key={index} />);
-    // }
-    
-    console.log("board", props, winner);
     
     return(
     <div>
-    <div>{winner ? 'Winner: ' + winner : 'Next Player:'}</div>
+    {winner ? <div><p>'Winner: ' + {winner} </p> <button onClick={() => onClickReset()}>Reset</button></div>
+    : <div><p>'Next Player: ' + {isNext}</p></div>
+    }
     <div className="board">
         {Squares}
     </div>

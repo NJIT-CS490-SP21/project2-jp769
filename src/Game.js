@@ -5,10 +5,11 @@ import { socket } from './App.js';
 
 export function Game(props){
   // let [player, setPlayer] = useState("");
-  let [sign, setSign] = useState(null);
+  let [sign, setSign] = useState(null); // Player X or 0 Stored client side
   let [Players, setPlayers] = useState([]); // Current Players 
   let [Spectators, setSpectators] = useState([]); // Spectators
-  let [info, setInfo] = useState("");
+  let [info, setInfo] = useState(""); // diaplay of players and spectators
+  let first = useState(true);
   
   useEffect(() => {
     socket.on('login', (users) => {
@@ -39,6 +40,7 @@ export function Game(props){
       setSign(() => "X");
     }else if(props.name === pY){
       setSign(() => "O");
+      first = false;
     }
     setInfo(() => <p>Spectators: {Spectators.toString()}<br/>Players: {Players.toString()}</p>);
   }
@@ -46,7 +48,7 @@ export function Game(props){
   return(
     <div>
       {info}
-      <Board name={props.name} sign={sign} />
+      <Board name={props.name} sign={sign} first={first}/>
     </div>
   );
 }
