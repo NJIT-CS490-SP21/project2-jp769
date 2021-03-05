@@ -61,6 +61,7 @@ export function Board(props){
             setBoard(() => newBoard);
         
             let next = "X";
+            setNext(() => next);
             socket.emit('board', {board: newBoard, nextP: next});
         }
     }
