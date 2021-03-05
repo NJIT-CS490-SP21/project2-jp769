@@ -1,6 +1,6 @@
 import './Board.css';
-import { Box, BoxSpec } from './Box.js';
-import React, { useState, useEffect } from 'react';
+import { Box } from './Box.js';
+import { useState, useEffect } from 'react';
 import { socket } from './App.js';
 
 function calcWinner(squares) {
@@ -35,7 +35,6 @@ function calcTie(squares){
 
 export function Board(props){
     const [board, setBoard] = useState(Array(9).fill(null));
-    // const [player, setPlayer] = useState();
     const winner = calcWinner(board);
     const [isNext, setNext] = useState("X");
     const tie = calcTie(board);
@@ -71,7 +70,7 @@ export function Board(props){
     // run the code in the function that is passed in as the second arg
     socket.on('board', (data) => {
       console.log('Player event received!');
-      console.log(data);
+    //   console.log(data);
       setBoard((board) => data.board);
       setNext((isNext) => data.nextP);
     });

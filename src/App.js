@@ -1,9 +1,7 @@
-// import logo from './logo.svg';
-// import { ListItem } from './ListItem.js';
+import logo from './logo.svg';
 import './App.css';
 import { Game } from './Game.js';
-import React, { useState, useEffect, useRef } from 'react';
-
+import { useState, useRef } from 'react';
 import io from 'socket.io-client';
 
 export let socket = io();
@@ -37,5 +35,3 @@ function App() {
 }
 
 export default App;
-
-// something about storing local variables and not client or something, index or checking players for username everytime since playerName stays

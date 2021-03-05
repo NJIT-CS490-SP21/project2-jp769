@@ -1,6 +1,6 @@
 import './App.css';
 import { Board } from './Board.js';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { socket } from './App.js';
 
 export function Game(props){
