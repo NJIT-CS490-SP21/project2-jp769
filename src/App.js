@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import { Game } from './Game.js';
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import io from 'socket.io-client';
 
 export let socket = io();

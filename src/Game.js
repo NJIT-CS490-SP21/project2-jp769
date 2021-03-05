@@ -1,10 +1,9 @@
 import './App.css';
 import { Board } from './Board.js';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { socket } from './App.js';
 
 export function Game(props){
-  // let [player, setPlayer] = useState("");
   let [sign, setSign] = useState(null); // Player X or 0 Stored client side
   let [Players, setPlayers] = useState([]); // Current Players 
   let [Spectators, setSpectators] = useState([]); // Spectators
@@ -21,7 +20,6 @@ export function Game(props){
   }, []);
   
   function update(users){
-    // console.log('here', users);
     const copy = users.players;
     let copyPlayers = Players;
     copy.map((x, index) => {copyPlayers[index] = x});
@@ -44,7 +42,6 @@ export function Game(props){
     }
     if(Players.includes(props.name)){
       setPlayable(() => true);
-      // console.log("can play");
     }
     setInfo(() => <p>Spectators: {Spectators.toString()}<br/>Players: {Players.toString()}</p>);
   }

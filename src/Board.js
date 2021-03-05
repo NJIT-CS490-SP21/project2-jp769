@@ -1,6 +1,6 @@
 import './Board.css';
 import { Box } from './Box.js';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { socket } from './App.js';
 
 function calcWinner(squares) {
