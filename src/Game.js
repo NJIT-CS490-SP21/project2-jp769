@@ -10,18 +10,18 @@ export function Game(props){
   let [Spectators, setSpectators] = useState([]); // Spectators
   let [info, setInfo] = useState(""); // diaplay of players and spectators
   let first = useState(true);
+  let [playable, setPlayable] = useState(false);
   
   useEffect(() => {
     socket.on('login', (users) => {
       console.log("recieved login", users);
-      console.log(Players, Spectators);
       update(users);
       console.log(Players, Spectators);
     });
   }, []);
   
   function update(users){
-    console.log('here', users);
+    // console.log('here', users);
     const copy = users.players;
     let copyPlayers = Players;
     copy.map((x, index) => {copyPlayers[index] = x});
@@ -42,13 +42,17 @@ export function Game(props){
       setSign(() => "O");
       first = false;
     }
+    if(Players.includes(props.name)){
+      setPlayable(() => true);
+      // console.log("can play");
+    }
     setInfo(() => <p>Spectators: {Spectators.toString()}<br/>Players: {Players.toString()}</p>);
   }
   
   return(
     <div>
       {info}
-      <Board name={props.name} sign={sign} first={first}/>
+      <Board name={props.name} sign={sign} first={first} playable={playable}/>
     </div>
   );
 }

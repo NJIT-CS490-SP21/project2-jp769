@@ -24,16 +24,26 @@ function calcWinner(squares) {
     return null;
 }
 
+function calcTie(squares){
+    for (let i=0; i<squares.length; i++){
+        if (squares[i] === null){
+            return false;
+        }
+    }
+    return true;
+}
+
 export function Board(props){
     const [board, setBoard] = useState(Array(9).fill(null));
     // const [player, setPlayer] = useState();
     const winner = calcWinner(board);
     const [isNext, setNext] = useState("X");
+    const tie = calcTie(board);
     
     function onClickButton(index) {
         let newBoard = board;
         
-        if(board[index] === null && isNext==props.sign && !winner){
+        if(board[index] === null && isNext==props.sign && !winner && props.playable){
             newBoard[index] = props.sign;
             setBoard(() => newBoard);
             
@@ -46,11 +56,13 @@ export function Board(props){
     }
     
     function onClickReset(){
-        let newBoard = Array(9).fill(null);
-        setBoard(() => newBoard);
+        if(props.playable === true){
+            let newBoard = Array(9).fill(null);
+            setBoard(() => newBoard);
         
-        let next = "X";
-        socket.emit('board', {board: newBoard, nextP: next});
+            let next = "X";
+            socket.emit('board', {board: newBoard, nextP: next});
+        }
     }
     
     useEffect(() => {
@@ -70,8 +82,8 @@ export function Board(props){
     
     return(
     <div>
-    {winner ? <div><p>'Winner: ' + {winner} </p> <button onClick={() => onClickReset()}>Reset</button></div>
-    : <div><p>'Next Player: ' + {isNext}</p></div>
+    {winner ? <div><p>Winner: {winner} </p> <button onClick={() => onClickReset()}>Reset</button></div>
+    : ( tie===true ? <div><p>TIE</p><button onClick={() => onClickReset()}>Reset</button></div> : <div><p>Next Player: {isNext}</p></div>)
     }
     <div className="board">
         {Squares}
