@@ -42,7 +42,7 @@ export function Board(props){
     function onClickButton(index) {
         let newBoard = board;
         
-        if(board[index] === null && isNext==props.sign && !winner && props.playable){
+        if(board[index] === null && isNext===props.sign && !winner && props.playable){
             newBoard[index] = props.sign;
             setBoard(() => newBoard);
             

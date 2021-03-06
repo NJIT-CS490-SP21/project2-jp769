@@ -22,14 +22,14 @@ export function Game(props){
   function update(users){
     const copy = users.players;
     let copyPlayers = Players;
-    copy.map((x, index) => {copyPlayers[index] = x});
+    copy.map((x, index) => copyPlayers[index] = x);
     setPlayers(() => {
       return copyPlayers;
     });
     const specs = users.spectators;
     setSpectators(() =>{
       let copyS = Spectators;
-      specs.map((x, index) => {copyS[index] = x});
+      specs.map((x, index) => copyS[index] = x);
       return copyS;
     });
     let pX = users.PlayerX;
