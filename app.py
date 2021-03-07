@@ -33,6 +33,7 @@ PLAYERS = []
 SPECTATORS = []
 PLAYERX = ''
 PLAYERY = ''
+users = {}
 
 @app.route('/', defaults={"filename": "index.html"})
 @app.route('/<path:filename>')
@@ -43,6 +44,13 @@ def index(filename):
 @socketio.on('connect')
 def on_connect():
     print('User connected!')
+    all_players = models.Player.query.order_by().all()
+    global users
+    # print(all_players, all_players[0].ranking, all_players[0].username)
+    for user in all_players:
+        users.update({user.username: user.ranking})
+    print(users)
+    socketio.emit('user_list', {'users': users})
 
 # When a client disconnects from this Socket connection, this function is run
 @socketio.on('disconnect')
@@ -62,6 +70,12 @@ def on_play(data): # data is whatever arg you pass in your emit call on client
 def on_login(player):
     global PLAYERX
     global PLAYERY
+    global users
+    if player['player'] not in users:
+        new_user = models.Player(username=player['player'])
+        db.session.add(new_user)
+        db.session.commit()
+    
     if len(PLAYERS) < 2:
         PLAYERS.append(player['player'])
         if len(PLAYERS) == 1:
