@@ -62,7 +62,7 @@ export function Game(props){
       <p>Logged in as: {props.name} (You're {sign})</p>
       <p>{info}</p>
       
-      {Players.length === 1 ? <p class="alert_message">Waiting for Player 2</p> : null}
+      {Players.length === 1 ? <p className="alert_message">Waiting for Player 2</p> : null}
       <Board name={props.name} sign={sign} first={first} playable={playable}/>
       
         {showLeaderboard === true ? 
