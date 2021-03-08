@@ -44,7 +44,7 @@ export function Game(props){
       setSign(() => "O");
       first = false;
     }
-    if(Players.includes(props.name)){
+    if(Players.includes(props.name) & pY){
       setPlayable(() => true);
     }
     setInfo(() => <p>Spectators: {Spectators.toString()}<br/>Players: {Players.toString()}</p>);
@@ -59,12 +59,15 @@ export function Game(props){
   
   return(
     <div>
-      {info}
+      <p>Logged in as: {props.name} (You're {sign})</p>
+      <p>{info}</p>
+      
+      {Players.length === 1 ? <p class="alert_message">Waiting for Player 2</p> : null}
       <Board name={props.name} sign={sign} first={first} playable={playable}/>
       
         {showLeaderboard === true ? 
         (<div><button onClick={() => onClickShowLeaderboard()}>Hide Leaderboard</button>
-        <Leaderboard arr={props.arr}/></div>)
+        <Leaderboard arr={props.arr} name={props.name}/></div>)
         :
         (<div><button onClick={() => onClickShowLeaderboard()}>Show Leaderboard</button></div>)
         }

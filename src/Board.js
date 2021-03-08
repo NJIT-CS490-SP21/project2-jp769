@@ -86,7 +86,7 @@ export function Board(props){
     return(
     <div>
     {winner ? <div><p>Winner: {winner} </p> <button onClick={() => onClickReset()}>Reset</button></div>
-    : ( tie === true ? <div><p>TIE</p><button onClick={() => onClickReset()}>Reset</button></div> : <div><p>Next Player: {isNext}</p></div>)
+    : ( tie === true ? <div><p>TIE</p><button onClick={() => onClickReset()}>Reset</button></div> : <div><p>Next to play: {isNext}</p></div>)
     }
     <div className="board">
         {Squares}
