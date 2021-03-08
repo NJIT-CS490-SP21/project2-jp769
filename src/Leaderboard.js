@@ -1,8 +1,7 @@
 import React from 'react';
+import './Leaderboard.css';
 
 export function Leaderboard(props){
-    // const columns = ["Username", "Ranking"];
-    // console.log(props.arr);
     const table = props.arr;
     const usernames = {};
     let data="";
@@ -12,11 +11,8 @@ export function Leaderboard(props){
     }
 
     const keys = Object.keys(usernames);
-    console.log(keys);
     
-    // data = <tr><td>{ keys[0].toString() }</td><td>{ usernames[keys[0]].toString() }</td></tr>;
-    // data = keys.forEach((key, index) => <tr key={index}><td>{ key }</td><td>{ usernames[key] }</td></tr>);
-    // data = usernames.map((x, index) => <tr key={index}><td>{ x }</td><td>{ table[x][1] }</td></tr>);
+    data = keys.map((x, index) => x === props.name ? <tr class='current_user' key={index}><td>{x} (you)</td><td>{usernames[x]}</td></tr> : <tr key={index}><td>{x}</td><td>{usernames[x]}</td></tr>);
     
     return (<div><table>
         <thead>
@@ -24,6 +20,7 @@ export function Leaderboard(props){
         <tr><th>Username</th><th>Ranking</th></tr>
         </thead>
         <tbody>
+        {data}
         </tbody>
     </table></div>
     );

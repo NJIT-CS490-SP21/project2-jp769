@@ -1,0 +1,21 @@
+th,td,tr {
+  text-align: center;
+}
+table,
+th,
+td {
+  border: 1px solid black;
+}
+
+thead tr:nth-child(1) {
+  background-color: #1c87c9;
+  color: #ffffff;
+}
+thead tr:nth-child(2) {
+  background-color: #e1f5fe;
+  color: black;
+}
+
+.current_user {
+  font-weight: bold;
+}
