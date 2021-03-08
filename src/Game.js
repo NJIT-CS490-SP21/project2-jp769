@@ -1,5 +1,6 @@
 import './App.css';
 import { Board } from './Board.js';
+import { Leaderboard } from './Leaderboard.js';
 import React, { useState, useEffect } from 'react';
 import { socket } from './App.js';
 
@@ -10,13 +11,16 @@ export function Game(props){
   let [info, setInfo] = useState(""); // diaplay of players and spectators
   let first = useState(true);
   let [playable, setPlayable] = useState(false);
+  let [showLeaderboard, setShown] = useState(false); // show leaderboard
   
   useEffect(() => {
+
     socket.on('login', (users) => {
       console.log("recieved login", users);
       update(users);
-      console.log(Players, Spectators);
+      // console.log(Players, Spectators);
     });
+
   }, []);
   
   function update(users){
@@ -46,10 +50,25 @@ export function Game(props){
     setInfo(() => <p>Spectators: {Spectators.toString()}<br/>Players: {Players.toString()}</p>);
   }
   
+  
+  function onClickShowLeaderboard(){
+    setShown((prevShown) => {
+      return !prevShown;
+    });
+  }
+  
   return(
     <div>
       {info}
       <Board name={props.name} sign={sign} first={first} playable={playable}/>
+      
+        {showLeaderboard === true ? 
+        (<div><button onClick={() => onClickShowLeaderboard()}>Hide Leaderboard</button>
+        <Leaderboard arr={props.arr}/></div>)
+        :
+        (<div><button onClick={() => onClickShowLeaderboard()}>Show Leaderboard</button></div>)
+        }
+        
     </div>
   );
 }
