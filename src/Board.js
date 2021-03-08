@@ -3,7 +3,7 @@ import { Box } from './Box.js';
 import React, { useState, useEffect } from 'react';
 import { socket } from './App.js';
 
-function calcWinner(squares) {
+function calcWinner(squares, player) {
     const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -35,9 +35,10 @@ function calcTie(squares){
 
 export function Board(props){
     const [board, setBoard] = useState(Array(9).fill(null));
-    const winner = calcWinner(board);
+    const winner = calcWinner(board, props.name);
     const [isNext, setNext] = useState("X");
     const tie = calcTie(board);
+    const update_ranking = 0;
     
     function onClickButton(index) {
         let newBoard = board;
@@ -58,9 +59,11 @@ export function Board(props){
         if(props.playable === true){
             let newBoard = Array(9).fill(null);
             setBoard(() => newBoard);
-        
             let next = "X";
             setNext(() => next);
+            if(winner && winner === props.sign){
+                socket.emit("game_over", {'winner': props.name});
+            }
             socket.emit('board', {board: newBoard, nextP: next});
         }
     }
@@ -83,7 +86,7 @@ export function Board(props){
     return(
     <div>
     {winner ? <div><p>Winner: {winner} </p> <button onClick={() => onClickReset()}>Reset</button></div>
-    : ( tie===true ? <div><p>TIE</p><button onClick={() => onClickReset()}>Reset</button></div> : <div><p>Next Player: {isNext}</p></div>)
+    : ( tie === true ? <div><p>TIE</p><button onClick={() => onClickReset()}>Reset</button></div> : <div><p>Next Player: {isNext}</p></div>)
     }
     <div className="board">
         {Squares}

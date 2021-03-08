@@ -33,7 +33,8 @@ PLAYERS = []
 SPECTATORS = []
 PLAYERX = ''
 PLAYERY = ''
-users = {}
+USERS = []
+USERNAMES = {}
 
 @app.route('/', defaults={"filename": "index.html"})
 @app.route('/<path:filename>')
@@ -44,13 +45,14 @@ def index(filename):
 @socketio.on('connect')
 def on_connect():
     print('User connected!')
-    all_players = models.Player.query.order_by().all()
-    global users
-    # print(all_players, all_players[0].ranking, all_players[0].username)
+    all_players = models.Player.query.order_by(models.Player.ranking.desc()).all()
+    global USERS
     for user in all_players:
-        users.update({user.username: user.ranking})
-    print(users)
-    socketio.emit('user_list', {'users': users})
+        if user.username not in USERNAMES:
+            USERS.append([user.username, user.ranking])
+            USERNAMES.update({user.username: 1})
+    print(USERS)
+    socketio.emit('user_list', {'users': USERS}, broadcast=True)
 
 # When a client disconnects from this Socket connection, this function is run
 @socketio.on('disconnect')
@@ -70,12 +72,11 @@ def on_play(data): # data is whatever arg you pass in your emit call on client
 def on_login(player):
     global PLAYERX
     global PLAYERY
-    global users
-    if player['player'] not in users:
+    global USERS
+    if player['player'] not in USERNAMES:
         new_user = models.Player(username=player['player'])
         db.session.add(new_user)
         db.session.commit()
-    
     if len(PLAYERS) < 2:
         PLAYERS.append(player['player'])
         if len(PLAYERS) == 1:
@@ -89,9 +90,20 @@ def on_login(player):
         data.update({"PlayerX": PLAYERX})
     if PLAYERY != '':
         data.update({"PlayerY": PLAYERY})
-    print(str(data))
+    # print(str(data))
     socketio.emit('login', data, broadcast=True, include_self=True)
 
+@socketio.on("game_over")
+def game_over(data):
+    # print(data)
+    player = data['winner']
+    user=db.session.query(models.Player).filter_by(username=player).first()
+    user.ranking = user.ranking + 1
+    player_2 = PLAYERX if player == PLAYERY else PLAYERY
+    user_2=db.session.query(models.Player).filter_by(username=player_2).first()
+    user_2.ranking = user_2.ranking - 1
+    db.session.commit()
+    db.session.flush()
 
 # Note we need to add this line so we can import app in the python shell
 if __name__ == "__main__":
