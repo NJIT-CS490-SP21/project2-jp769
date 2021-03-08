@@ -50,7 +50,6 @@ function App() {
       </div>
       ) : (
       <div>
-      <p>Logged in as: {playerName}</p>
       <Game name={playerName} arr={ leaderboard }/>
       </div>
       ) 
