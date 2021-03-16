@@ -1,4 +1,6 @@
 '''
+Models.py
+Models that will be used in database
 
 '''
 from app import DB
@@ -6,6 +8,7 @@ from app import DB
 
 class Player(DB.Model):
     '''
+    Class Player with attributes username, ranking, wins, and losses.
     '''
     username = DB.Column(DB.String(80),
                          unique=True,
