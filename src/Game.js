@@ -5,10 +5,11 @@ import Board from './Board';
 import Leaderboard from './Leaderboard';
 import { socket } from './App';
 
-const Game = (props) => {
+function Game(props) {
   Game.propTypes = {
     name: PropTypes.string.isRequired,
     arr: PropTypes.instanceof(Array).isRequired,
+    socket: PropTypes.instanceof(Object).isRequired,
   };
 
   const [sign, setSign] = useState(null); // Player X or 0 Stored client side
@@ -17,6 +18,7 @@ const Game = (props) => {
   const [info, setInfo] = useState(''); // diaplay of players and spectators
   const [playable, setPlayable] = useState(false);
   const [showLeaderboard, setShown] = useState(false); // show leaderboard
+  const { socket } = props;
 
   function update(users) {
     const copy = users.players;
@@ -41,7 +43,7 @@ const Game = (props) => {
     } else if (props.name === pY) {
       setSign(() => 'O');
     }
-    if (Players.includes(props.name) && pY) {
+    if (Players.includes(props.name) && Players.length > 1) {
       setPlayable(() => true);
     }
     setInfo(() => (
@@ -104,6 +106,6 @@ const Game = (props) => {
       )}
     </div>
   );
-};
+}
 
 export default Game;

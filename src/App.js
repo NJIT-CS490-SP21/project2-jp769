@@ -48,7 +48,7 @@ function App() {
     </div>
   ) : (
     <div>
-      <Game name={playerName} arr={leaderboard} />
+      <Game socket={socket} name={playerName} arr={leaderboard} />
     </div>
   );
 }

@@ -1,14 +1,22 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './Leaderboard.css';
 
-export function Leaderboard(props) {
-  const table = props.arr;
-  const usernames = {};
-  let data = '';
+function Leaderboard(props) {
+  Leaderboard.propTypes = {
+    arr: PropTypes.instanceof(Array).isRequired,
+    name: PropTypes.string.isRequired,
+  };
 
-  for (const i in table) {
-    usernames[table[i][0]] = table[i][1];
-  }
+  const table = props;
+  const { usernames } = {};
+  let data = '';
+  console.log(table.arr);
+
+  // Object.keys(table).forEach((key) => { usernames[table[key][0]] = table[key][1]; });
+  // for (const i in table) {
+  //   usernames[table[i][0]] = table[i][1];
+  // }
 
   const keys = Object.keys(usernames);
 
@@ -45,3 +53,5 @@ export function Leaderboard(props) {
     </div>
   );
 }
+
+export default Leaderboard;

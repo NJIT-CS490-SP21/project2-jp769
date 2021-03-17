@@ -22,7 +22,7 @@
     },
     "overrides": [
         {
-            "files": ["*.js"],
+            "files": ["App.js", "Game.js", "Board.js", "Box.js", "Leaderboard.js"],
             "rules": {
                 "react/no-array-index-key": "off",
                 "react-hooks/exhaustive-deps": "off",

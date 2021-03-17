@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Box = (props) => {
+function Box(props){
   Box.propTypes = {
     onClick: PropTypes.func.isRequired,
     value: PropTypes.string,

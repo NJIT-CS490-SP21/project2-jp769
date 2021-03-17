@@ -34,7 +34,7 @@ function calcTie(squares) {
   return true;
 }
 
-const Board = (props) => {
+function Board(props){
   Board.propTypes = {
     name: PropTypes.string.isRequired,
     sign: PropTypes.string.isRequired,
