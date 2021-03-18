@@ -3,23 +3,23 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Board from './Board';
 import Leaderboard from './Leaderboard';
-import { socket } from './App';
+
+const socket = require('./App');
 
 function Game(props) {
   Game.propTypes = {
     name: PropTypes.string.isRequired,
     arr: PropTypes.instanceof(Array).isRequired,
-    socket: PropTypes.instanceof(Object).isRequired,
   };
-
+  const { name, arr } = props;
   const [sign, setSign] = useState(null); // Player X or 0 Stored client side
   const [Players, setPlayers] = useState([]); // Current Players
   const [Spectators, setSpectators] = useState([]); // Spectators
   const [info, setInfo] = useState(''); // diaplay of players and spectators
   const [playable, setPlayable] = useState(false);
   const [showLeaderboard, setShown] = useState(false); // show leaderboard
-  const { socket } = props;
-
+  // const { socket } = props;
+  console.log(name, arr, props);
   function update(users) {
     const copy = users.players;
     let copyPlayers;
@@ -38,12 +38,12 @@ function Game(props) {
     });
     const pX = users.PlayerX;
     const pY = users.PlayerY;
-    if (props.name === pX) {
+    if (name === pX) {
       setSign(() => 'X');
-    } else if (props.name === pY) {
+    } else if (name === pY) {
       setSign(() => 'O');
     }
-    if (Players.includes(props.name) && Players.length > 1) {
+    if (Players.includes(name) && Players.length > 1) {
       setPlayable(() => true);
     }
     setInfo(() => (
@@ -76,7 +76,7 @@ function Game(props) {
       <p>
         Logged in as:
         {' '}
-        {props.name}
+        {name}
         {' '}
         (You&apos;re
         {' '}
@@ -88,14 +88,14 @@ function Game(props) {
       {Players.length === 1 ? (
         <p className="alert_message">Waiting for Player 2</p>
       ) : null}
-      <Board name={props.name} sign={sign} playable={playable} />
+      <Board name={name} sign={sign} playable={playable} />
 
       {showLeaderboard === true ? (
         <div>
           <button onClick={() => onClickShowLeaderboard()} type="button">
             Hide Leaderboard
           </button>
-          <Leaderboard arr={props.arr} name={props.name} />
+          <Leaderboard arr={arr} name={name} />
         </div>
       ) : (
         <div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Box(props){
+function Box(props) {
   Box.propTypes = {
     onClick: PropTypes.func.isRequired,
     value: PropTypes.string,
@@ -12,8 +12,8 @@ function Box(props){
   const { value } = props;
   console.log(value);
   return (
-    <div className="box" onMouseDown={() => props.onClick()} role="button" tabIndex="0">{value.value}</div>
+    <div className="box" onMouseDown={() => props.onClick()} role="button" tabIndex="0">{value}</div>
   );
-};
+}
 
 export default Box;

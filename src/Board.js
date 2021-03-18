@@ -2,7 +2,8 @@ import './Board.css';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Box from './Box';
-import { socket } from './App';
+
+const socket = require('./App');
 
 function calcWinner(squares) {
   const lines = [
@@ -34,7 +35,7 @@ function calcTie(squares) {
   return true;
 }
 
-function Board(props){
+function Board(props) {
   Board.propTypes = {
     name: PropTypes.string.isRequired,
     sign: PropTypes.string.isRequired,
@@ -42,11 +43,11 @@ function Board(props){
   };
 
   const [board, setBoard] = useState(Array(9).fill(null));
-  const { name } = props;
+  const { name, sign, playable } = props;
   const winner = calcWinner(board, name);
   const [isNext, setNext] = useState('X');
   const tie = calcTie(board);
-  console.log(name, tie);
+  console.log(name, sign, playable, props, tie);
   function onClickButton(index) {
     const newBoard = board;
 
@@ -126,6 +127,6 @@ function Board(props){
       <div className="board">{Squares}</div>
     </div>
   );
-};
+}
 
 export default Board;

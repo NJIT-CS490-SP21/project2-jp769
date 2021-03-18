@@ -8,10 +8,10 @@ function Leaderboard(props) {
     name: PropTypes.string.isRequired,
   };
 
-  const table = props;
-  const { usernames } = {};
+  const { arr, name } = props;
+  const usernames = {};
   let data = '';
-  console.log(table.arr);
+  console.log(arr, name, props);
 
   // Object.keys(table).forEach((key) => { usernames[table[key][0]] = table[key][1]; });
   // for (const i in table) {
@@ -38,6 +38,7 @@ function Leaderboard(props) {
 
   return (
     <div>
+      {' '}
       <table>
         <thead>
           <tr>
