@@ -51,7 +51,7 @@ function Board(props) {
   const winner = calcWinner(board, name);
   const [isNext, setNext] = useState('X');
   const tie = calcTie(board);
-  console.log('b', name, sign, playable, props, tie, '/b');
+  // console.log('b', name, sign, playable, props, tie, '/b');
   function onClickButton(index) {
     const newBoard = board;
 
@@ -59,7 +59,7 @@ function Board(props) {
       board[index] === null
       && isNext === sign
       && !winner
-      && props.playable
+      && playable
     ) {
       newBoard[index] = sign;
       setBoard(() => newBoard);
@@ -77,7 +77,7 @@ function Board(props) {
   }
 
   function onClickReset() {
-    if (props.playable === true) {
+    if (playable === true) {
       const newBoard = Array(9).fill(null);
       setBoard(() => newBoard);
       const next = 'X';
@@ -116,11 +116,15 @@ function Board(props) {
           <button onClick={() => onClickReset()} type="button">Reset</button>
         </div>
       ) : (
+        null
+      )}
+      {tie ? (
         <div>
-          <p>TIE</p>
+          <p>It&apos;s a Tie!</p>
+          {' '}
           <button onClick={() => onClickReset()} type="button">Reset</button>
         </div>
-      )}
+      ) : null}
       <div>
         <p>
           Next to play:

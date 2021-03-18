@@ -20,26 +20,21 @@ function Game(props) {
   const [info, setInfo] = useState(''); // diaplay of players and spectators
   const [playable, setPlayable] = useState(false);
   const [showLeaderboard, setShown] = useState(false); // show leaderboard
-  // const { socket } = props;
   console.log(name, arr, props);
   function update(users) {
-    const copy = users.players;
-    let copyPlayers;
-    copy.map((x, index) => {
-      copyPlayers = Players;
-      copyPlayers[index] = x;
-      return copyPlayers;
-    });
+    const copy = users;
+    const copyPlayers = Players;
+    if (copy.player_x != null) copyPlayers[0] = copy.player_x;
+    if (copy.player_o != null) copyPlayers[1] = copy.player_o;
     setPlayers(() => copyPlayers);
     const specs = users.spectators;
     setSpectators(() => {
       const copyS = Spectators;
       Object.keys(specs).forEach((keys) => { copyS[keys] = specs[keys]; });
-      // specs.map((x, index) => (copyS[index] = x));
       return copyS;
     });
-    const pX = users.PlayerX;
-    const pY = users.PlayerY;
+    const pX = users.player_x;
+    const pY = users.player_o;
     if (name === pX) {
       setSign(() => 'X');
     } else if (name === pY) {
