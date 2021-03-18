@@ -5,7 +5,7 @@ Creating the app, running socket listeners and emitters
 Loading database data with SQLAlchemy
 '''
 import os
-from flask import Flask, send_from_directory, json #, session
+from flask import Flask, send_from_directory, json  #, session
 from flask_socketio import SocketIO
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -50,6 +50,7 @@ USERNAMES = {}
 #     else:
 #         SPECTATORS.append(username)
 #     return PLAYERX, PLAYERY, PLAYERS, SPECTATORS
+
 
 @APP.route('/', defaults={"filename": "index.html"})
 @APP.route('/<path:filename>')
