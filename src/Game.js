@@ -4,14 +4,16 @@ import PropTypes from 'prop-types';
 import Board from './Board';
 import Leaderboard from './Leaderboard';
 
-const socket = require('./App');
+// const socket = require('./App');
+// import socket from './App';
 
 function Game(props) {
   Game.propTypes = {
+    s: PropTypes.instanceOf(Object).isRequired,
     name: PropTypes.string.isRequired,
-    arr: PropTypes.instanceof(Array).isRequired,
+    arr: PropTypes.instanceOf(Array).isRequired,
   };
-  const { name, arr } = props;
+  const { s, name, arr } = props;
   const [sign, setSign] = useState(null); // Player X or 0 Stored client side
   const [Players, setPlayers] = useState([]); // Current Players
   const [Spectators, setSpectators] = useState([]); // Spectators
@@ -60,7 +62,7 @@ function Game(props) {
   }
 
   useEffect(() => {
-    socket.on('login', (users) => {
+    s.on('login', (users) => {
       console.log('recieved login', users);
       update(users);
       // console.log(Players, Spectators);
@@ -88,7 +90,7 @@ function Game(props) {
       {Players.length === 1 ? (
         <p className="alert_message">Waiting for Player 2</p>
       ) : null}
-      <Board name={name} sign={sign} playable={playable} />
+      <Board s={s} name={name} sign={sign} playable={playable} />
 
       {showLeaderboard === true ? (
         <div>

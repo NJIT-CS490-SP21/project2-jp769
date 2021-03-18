@@ -40,6 +40,16 @@ PLAYERY = ''
 USERS = []
 USERNAMES = {}
 
+# def add_player(username, PLAYERX, PLAYERY, PLAYERS, SPECTATORS):
+#     if(PLAYERX) == '':
+#         PLAYERX = username
+#         PLAYERS.append(username)
+#     elif PLAYERY == '':
+#         PLAYERY = username
+#         PLAYERS.append(username)
+#     else:
+#         SPECTATORS.append(username)
+#     return PLAYERX, PLAYERY, PLAYERS, SPECTATORS
 
 @APP.route('/', defaults={"filename": "index.html"})
 @APP.route('/<path:filename>')
@@ -113,6 +123,7 @@ def on_login(player):
             PLAYERY = PLAYERS[1]
     else:
         SPECTATORS.append(player['player'])
+    # add_player(player['player'], PLAYERX, PLAYERY, PLAYERS, SPECTATORS)
     data = {"players": PLAYERS, "spectators": SPECTATORS}
     if PLAYERX != '':
         data.update({"PlayerX": PLAYERX})

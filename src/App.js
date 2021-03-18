@@ -2,8 +2,9 @@ import './App.css';
 import React, { useState, useRef, useEffect } from 'react';
 import io from 'socket.io-client';
 import Game from './Game';
+// const Game = require('./Game');
 
-export const socket = io();
+const socket = io();
 
 function App() {
   const inputRef = useRef(null); // for input
@@ -48,7 +49,7 @@ function App() {
     </div>
   ) : (
     <div>
-      <Game name={playerName} arr={leaderboard} />
+      <Game s={socket} name={playerName} arr={leaderboard} />
     </div>
   );
 }

@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Box from './Box';
 
-const socket = require('./App');
+// const socket = require('./App');
+// import socket from './App';
 
 function calcWinner(squares) {
   const lines = [
@@ -37,27 +38,30 @@ function calcTie(squares) {
 
 function Board(props) {
   Board.propTypes = {
+    s: PropTypes.instanceOf(Object).isRequired,
     name: PropTypes.string.isRequired,
     sign: PropTypes.string.isRequired,
     playable: PropTypes.bool.isRequired,
   };
 
   const [board, setBoard] = useState(Array(9).fill(null));
-  const { name, sign, playable } = props;
+  const {
+    s, name, sign, playable,
+  } = props;
   const winner = calcWinner(board, name);
   const [isNext, setNext] = useState('X');
   const tie = calcTie(board);
-  console.log(name, sign, playable, props, tie);
+  console.log('b', name, sign, playable, props, tie, '/b');
   function onClickButton(index) {
     const newBoard = board;
 
     if (
       board[index] === null
-      && isNext === props.sign
+      && isNext === sign
       && !winner
       && props.playable
     ) {
-      newBoard[index] = props.sign;
+      newBoard[index] = sign;
       setBoard(() => newBoard);
 
       let next = isNext;
@@ -66,10 +70,9 @@ function Board(props) {
       } else {
         next = 'X';
       }
-      // next === 'X' ? next = 'O' : next = 'X';
       setNext(() => next);
 
-      socket.emit('board', { board: newBoard, nextP: next });
+      s.emit('board', { board: newBoard, nextP: next });
     }
   }
 
@@ -79,17 +82,17 @@ function Board(props) {
       setBoard(() => newBoard);
       const next = 'X';
       setNext(() => next);
-      if (winner && winner === props.sign) {
-        socket.emit('game_over', { winner: props.name });
+      if (winner && winner === sign) {
+        s.emit('game_over', { winner: name });
       }
-      socket.emit('board', { board: newBoard, nextP: next });
+      s.emit('board', { board: newBoard, nextP: next });
     }
   }
 
   useEffect(() => {
     // Listening for a board event emitted by the server. If received, we
     // run the code in the function that is passed in as the second arg
-    socket.on('board', (data) => {
+    s.on('board', (data) => {
       // console.log('Player event received!');
       //   console.log(data);
       setBoard(() => data.board);

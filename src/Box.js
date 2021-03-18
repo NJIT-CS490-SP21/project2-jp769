@@ -9,10 +9,9 @@ function Box(props) {
   Box.defaultProps = {
     value: null,
   };
-  const { value } = props;
-  console.log(value);
+  const { onClick, value } = props;
   return (
-    <div className="box" onMouseDown={() => props.onClick()} role="button" tabIndex="0">{value}</div>
+    <div className="box" onMouseDown={() => onClick()} role="button" tabIndex="0">{value}</div>
   );
 }
 
