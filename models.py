@@ -1,6 +1,7 @@
 '''
 Models.py
-Models that will be used in database
+Models that will be used in database to create Player model
+with username and ranking attributes
 
 '''
 from app import DB
