@@ -33,10 +33,6 @@ SOCKETIO = SocketIO(APP,
                     json=json,
                     manage_session=False)
 
-# PLAYERS = []
-# SPECTATORS = []
-# PLAYER_X = ''
-# PLAYER_Y = ''
 DATA = {
     'player_x': None,
     'player_o': None,
@@ -57,6 +53,20 @@ def add_player(username, data):
     else:
         data['spectators'].append(username)
     return data
+
+
+def get_database():
+    '''
+    Grabbing database after endgame for any updates on leaderboard
+    '''
+    all_players = models.Player.query.order_by(
+        models.Player.ranking.desc()).all()
+    users = []
+    global USERS
+    for user in all_players:
+        users.append([user.username, user.ranking])
+    USERS = users
+    SOCKETIO.emit('user_list', {'users': USERS}, broadcast=True)
 
 
 @APP.route('/', defaults={"filename": "index.html"})
@@ -122,14 +132,6 @@ def on_login(player):
         new_user = models.Player(username=player['player'])
         DB.session.add(new_user)
         DB.session.commit()
-    # if len(PLAYERS) < 2:
-    #     PLAYERS.append(player['player'])
-    #     if len(PLAYERS) == 1:
-    #         PLAYER_X = PLAYERS[0]
-    #     else:
-    #         PLAYER_Y = PLAYERS[1]
-    # else:
-    #     SPECTATORS.append(player['player'])
     add_player(player['player'], DATA)
     data = DATA
     # print(str(data))
@@ -153,6 +155,7 @@ def game_over(data):
     user_2.ranking = user_2.ranking - 1
     DB.session.commit()
     DB.session.flush()
+    get_database()
 
 
 # Note we need to add this line so we can import APP in the python shell

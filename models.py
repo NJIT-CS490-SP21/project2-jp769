@@ -5,11 +5,13 @@ with username and ranking attributes
 
 '''
 from app import DB
+# from flask_sqlalchemy import SQLAlchemy
+# DB = SQLAlchemy()
 
 
 class Player(DB.Model):
     '''
-    Class Player with attributes username, ranking, wins, and losses.
+    Class Player with attributes username, ranking
     '''
     username = DB.Column(DB.String(80),
                          unique=True,
