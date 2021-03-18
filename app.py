@@ -33,23 +33,30 @@ SOCKETIO = SocketIO(APP,
                     json=json,
                     manage_session=False)
 
-PLAYERS = []
-SPECTATORS = []
-PLAYERX = ''
-PLAYERY = ''
+# PLAYERS = []
+# SPECTATORS = []
+# PLAYER_X = ''
+# PLAYER_Y = ''
+DATA = {
+    'player_x': None,
+    'player_o': None,
+    'spectators': [],
+}
 USERS = []
 USERNAMES = {}
 
-# def add_player(username, PLAYERX, PLAYERY, PLAYERS, SPECTATORS):
-#     if(PLAYERX) == '':
-#         PLAYERX = username
-#         PLAYERS.append(username)
-#     elif PLAYERY == '':
-#         PLAYERY = username
-#         PLAYERS.append(username)
-#     else:
-#         SPECTATORS.append(username)
-#     return PLAYERX, PLAYERY, PLAYERS, SPECTATORS
+
+def add_player(username, data):
+    '''
+    Adding logged in user player or spectator based on server variables
+    '''
+    if data['player_x'] is None:
+        data['player_x'] = username
+    elif data['player_o'] is None:
+        data['player_o'] = username
+    else:
+        data['spectators'].append(username)
+    return data
 
 
 @APP.route('/', defaults={"filename": "index.html"})
@@ -109,27 +116,22 @@ def on_login(player):
     that gets added. Then it gets assigned to a player if available spot, else it becomes a
     spectator. This gets emitted to every client.
     '''
-    global PLAYERX
-    global PLAYERY
+    global DATA
     global USERS
     if player['player'] not in USERNAMES:
         new_user = models.Player(username=player['player'])
         DB.session.add(new_user)
         DB.session.commit()
-    if len(PLAYERS) < 2:
-        PLAYERS.append(player['player'])
-        if len(PLAYERS) == 1:
-            PLAYERX = PLAYERS[0]
-        else:
-            PLAYERY = PLAYERS[1]
-    else:
-        SPECTATORS.append(player['player'])
-    # add_player(player['player'], PLAYERX, PLAYERY, PLAYERS, SPECTATORS)
-    data = {"players": PLAYERS, "spectators": SPECTATORS}
-    if PLAYERX != '':
-        data.update({"PlayerX": PLAYERX})
-    if PLAYERY != '':
-        data.update({"PlayerY": PLAYERY})
+    # if len(PLAYERS) < 2:
+    #     PLAYERS.append(player['player'])
+    #     if len(PLAYERS) == 1:
+    #         PLAYER_X = PLAYERS[0]
+    #     else:
+    #         PLAYER_Y = PLAYERS[1]
+    # else:
+    #     SPECTATORS.append(player['player'])
+    add_player(player['player'], DATA)
+    data = DATA
     # print(str(data))
     SOCKETIO.emit('login', data, broadcast=True, include_self=True)
 
@@ -144,7 +146,8 @@ def game_over(data):
     player = data['winner']
     user = DB.session.query(models.Player).filter_by(username=player).first()
     user.ranking = user.ranking + 1
-    player_2 = PLAYERX if player == PLAYERY else PLAYERY
+    player_2 = DATA['player_x'] if player == DATA['player_o'] else DATA[
+        'player_o']
     user_2 = DB.session.query(
         models.Player).filter_by(username=player_2).first()
     user_2.ranking = user_2.ranking - 1
