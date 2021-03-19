@@ -41,7 +41,7 @@
 14. `\d` to list all our tables. Player should be in there now, if not make sure you're doing step 10 correctly. (`\q` to exit out of terminal)
 15. Push to Heroku: `git push heroku main`
 ⋅⋅⋅(Note, the Heroku URL should be displayed in terminal after step 5 or use `heroku open` to get URL)
-## My Heroku Deployment URL: [Here](https://thawing-eyrie-83157.herokuapp.com/)
+## My Heroku Deployment URL: [Here](https://enigmatic-depths-80071.herokuapp.com/)
 
 ## Run Application
 1. Run command in terminal (in your project directory): `python app.py`
