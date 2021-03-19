@@ -20,7 +20,7 @@ function Game(props) {
   const [info, setInfo] = useState(''); // diaplay of players and spectators
   const [playable, setPlayable] = useState(false);
   const [showLeaderboard, setShown] = useState(false); // show leaderboard
-  console.log(name, arr, props);
+  // console.log(name, arr, props);
   function update(users) {
     const copy = users;
     const copyPlayers = Players;

@@ -5,8 +5,6 @@ with username and ranking attributes
 
 '''
 from app import DB
-# from flask_sqlalchemy import SQLAlchemy
-# DB = SQLAlchemy()
 
 
 class Player(DB.Model):

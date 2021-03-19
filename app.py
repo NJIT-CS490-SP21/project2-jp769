@@ -10,7 +10,7 @@ from flask_socketio import SocketIO
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv, find_dotenv
-import models
+# import models
 
 load_dotenv(find_dotenv())  # This is to load your env variables from .env
 
